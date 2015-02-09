@@ -1,0 +1,16 @@
+v1.0.2 (Dez 17, 2014):
+- added URL settings in settings menu
+
+v1.0.1 (Dez 1, 2014):
+- changed display of streams as overlay
+
+v1.0.0 (May 14, 2014):
+- Image resize function added
+- Bug corrections and optimizations
+
+v0.2.0 (Apr 30, 2014):
+- License added
+- Bug corrections and optimizations
+
+v0.1.0 (Oct 24, 2013):
+- Initial release

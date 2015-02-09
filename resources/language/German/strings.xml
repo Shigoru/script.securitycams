@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+	<!-- Addon Name -->
+	<string id="30000">Securitycams</string>
+
+	<!-- Settings -->
+	<string id="30001">Definition der Mjpeg Streams</string> <!-- Category General -->
+		<string id="30010">URL Kamera 1</string> <!-- URL Camera 1 -->
+		<string id="30011">URL Kamera 2</string> <!-- URL Camera 2 -->
+		<string id="30012">URL Kamera 3</string> <!-- URL Camera 3 -->
+		<string id="30013">URL Kamera 4</string> <!-- URL Camera 4 -->
+		<string id="30014">URL Kamera 5</string> <!-- URL Camera 5 -->
+		<string id="30015">URL Kamera 6</string> <!-- URL Camera 6 -->
+</strings>
