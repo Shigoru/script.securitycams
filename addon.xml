@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon 
-	id="script.securitycams"
+  id="script.securitycams"
     name="Securitycams"
-    version="1.0.2"
+    version="1.0.3"
     provider-name="Homeserver, 4lb3rtO">
   <requires>
-    <import addon="xbmc.python" version="2.1.0"/>
-    <!-- <import addon="xbmc.gui"    version="4.0.0"/> -->
-	<import addon="xbmc.addon"  version="12.0.0"/>	
+    <import addon="xbmc.python" version="2.19.0"/>
+    <import addon="xbmc.gui"    version="5.3.0"/>
+    <import addon="xbmc.addon"  version="14.0.0"/>	
+    <import addon="script.module.pil" version="1.1.7"/>
   </requires>
   <extension point="xbmc.python.script" library="default.py">
     <provides>executable</provides>
@@ -16,13 +17,13 @@
   </extension>
   <extension point="xbmc.addon.metadata">    
     <summary lang="en">Display 6 Security Cameras</summary>
-	<summary lang="de">Zeige 6 Sicherheitskameras an</summary>
+    <summary lang="de">Zeige 6 Sicherheitskameras an</summary>
     <description lang="en">Display 6 Security Cameras</description>	
     <description lang="de">Zeige 6 Sicherheitskameras an</description>
-	<platform>all</platform>
-	<language>en</language>
-	<language>de</language>
-	<license>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</license>
+  <platform>all</platform>
+  <language>en</language>
+  <language>de</language>
+  <license>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</license>
     <forum><!-- http://www.xbmcnerds.com/index.php?page=Thread&threadID=32671 --></forum>
     <website></website>
     <email></email>
