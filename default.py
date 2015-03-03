@@ -1,3 +1,139 @@
-'''This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License.To view a copy of this license, visitGerman version:  http://creativecommons.org/licenses/by-nc-sa/4.0/deed.deEnglish version: http://creativecommons.org/licenses/by-nc-sa/4.0/or send a letter to Creative Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.'''import xbmcimport xbmcguiimport xbmcvfsimport xbmcaddonimport urllibimport os.pathfrom PIL import Imageaddon   = xbmcaddon.Addon()addonid = addon.getAddonInfo('id')ACTION_PREVIOUS_MENU = 10
+'''
+
+This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License.
+
+
+
+To view a copy of this license, visit
+
+German version:  http://creativecommons.org/licenses/by-nc-sa/4.0/deed.de
+
+English version: http://creativecommons.org/licenses/by-nc-sa/4.0/
+
+
+
+or send a letter to Creative Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
+
+'''
+
+
+import xbmc
+import xbmcgui
+import xbmcvfs
+import xbmcaddon
+import urllib
+import os.path
+from PIL import Image
+
+
+addon   = xbmcaddon.Addon()
+addonid = addon.getAddonInfo('id')
+
+
+ACTION_PREVIOUS_MENU = 10
 ACTION_STOP = 13
-ACTION_NAV_BACK = 92ACTION_BACKSPACE = 110class CamWindow(xbmcgui.WindowDialog):    def __init__(self):        path = xbmc.translatePath('special://profile/addon_data/%s' %addonid )        loader = xbmc.translatePath('special://home/addons/%s/resources/loader.gif' %addonid )        if not xbmcvfs.exists(path):            xbmcvfs.mkdir(path)        urls = [        addon.getSetting('URL1'),        addon.getSetting('URL2'),        addon.getSetting('URL3'),        addon.getSetting('URL4'),        addon.getSetting('URL5'),        addon.getSetting('URL6')        # Test URLs with Webcams        #'http://webcams.passau.de/cam-rathaus-huge-aktuell.jpg',        #'http://www.mediac2.de/projekte/webcam/wallstrasse/aktuell/aktuell.jpg',        #'http://www.cityscope.de/bmw/current_pano.jpg',        #'http://www.goldbeck.de/uploads/webcam/df0691/current.jpg',        #'http://62.157.185.131/record/current.jpg',        #'http://webcams.passau.de/cam-rathaus-huge-aktuell.jpg'        ]        files = [        os.path.join(path, '1.0.jpg'),        os.path.join(path, '2.0.jpg'),        os.path.join(path, '3.0.jpg'),        os.path.join(path, '4.0.jpg'),        os.path.join(path, '5.0.jpg'),        os.path.join(path, '6.0.jpg')        ]        coords = (            (12, 360, 205, 160),            (222, 360, 205, 160),            (432, 360, 205, 160),            (642, 360, 205, 160),            (852, 360, 205, 160),            (1062, 360, 205, 160),        )        imgs = []        for c, f in zip(coords, files):            # aspectRatio: integer - (values 0 = stretch (default), 1 = scale up (crops), 2 = scale down (black bars)            img = xbmcgui.ControlImage(*c, filename=loader, aspectRatio = 0)            self.addControl(img)                        imgs.append(img)                cams = [list(l) for l in zip(urls, files, imgs)]        self.show()                self.isRunning = True                x=0        while (not xbmc.abortRequested) and (self.isRunning):            x+=1            for i, c in enumerate(cams):                c[1] = os.path.join(path, '%d.%d.jpg') %(i, x)                urllib.urlretrieve(c[0], c[1])                self.resizeImg(c[1])                c[2].setImage(c[1], useCache=False)                xbmcvfs.delete(os.path.join(path, '%d.%d.jpg') %(i, x-1))                xbmc.sleep(1)                if not self.isRunning:                    break                    for i in xbmcvfs.listdir(path)[1]:            xbmcvfs.delete(os.path.join(path, i))    def onAction(self, action):        if action in (ACTION_PREVIOUS_MENU, ACTION_STOP, ACTION_NAV_BACK, ACTION_BACKSPACE):            self.isRunning = False            self.close()    def resizeImg(self, IMAGEFILE):        if xbmcvfs.exists(IMAGEFILE):            img = Image.open(IMAGEFILE)            img = img.resize((1280, 720))            img.save(IMAGEFILE)            CW = CamWindow()del CW
+ACTION_NAV_BACK = 92
+ACTION_BACKSPACE = 110
+
+
+
+class CamWindow(xbmcgui.WindowDialog):
+    def __init__(self):
+        path = xbmc.translatePath('special://profile/addon_data/%s' %addonid )
+        loader = xbmc.translatePath('special://home/addons/%s/resources/loader.gif' %addonid )
+
+        if not xbmcvfs.exists(path):
+            xbmcvfs.mkdir(path)
+
+
+        urls = [
+        addon.getSetting('URL1'),
+        addon.getSetting('URL2'),
+        addon.getSetting('URL3'),
+        addon.getSetting('URL4'),
+        addon.getSetting('URL5'),
+        addon.getSetting('URL6')
+
+        # Test URLs with Webcams
+        #'http://webcams.passau.de/cam-rathaus-huge-aktuell.jpg',
+        #'http://www.mediac2.de/projekte/webcam/wallstrasse/aktuell/aktuell.jpg',
+        #'http://www.cityscope.de/bmw/current_pano.jpg',
+        #'http://www.goldbeck.de/uploads/webcam/df0691/current.jpg',
+        #'http://62.157.185.131/record/current.jpg',
+        #'http://webcams.passau.de/cam-rathaus-huge-aktuell.jpg'
+        ]
+
+
+        files = [
+        os.path.join(path, '1.0.jpg'),
+        os.path.join(path, '2.0.jpg'),
+        os.path.join(path, '3.0.jpg'),
+        os.path.join(path, '4.0.jpg'),
+        os.path.join(path, '5.0.jpg'),
+        os.path.join(path, '6.0.jpg')
+        ]
+
+
+        coords = (
+            (12, 360, 205, 160),
+            (222, 360, 205, 160),
+            (432, 360, 205, 160),
+            (642, 360, 205, 160),
+            (852, 360, 205, 160),
+            (1062, 360, 205, 160),
+        )
+
+
+        imgs = []
+        for c, f in zip(coords, files):
+            # aspectRatio: integer - (values 0 = stretch (default), 1 = scale up (crops), 2 = scale down (black bars)
+            img = xbmcgui.ControlImage(*c, filename=loader, aspectRatio = 0)
+            self.addControl(img)            
+            imgs.append(img)
+        
+
+        cams = [list(l) for l in zip(urls, files, imgs)]
+
+
+        self.show()        
+        self.isRunning = True
+
+        
+        x=0
+        while (not xbmc.abortRequested) and (self.isRunning):
+            x+=1
+            for i, c in enumerate(cams):
+                c[1] = os.path.join(path, '%d.%d.jpg') %(i, x)
+                urllib.urlretrieve(c[0], c[1])
+                self.resizeImg(c[1])
+                c[2].setImage(c[1], useCache=False)
+                xbmcvfs.delete(os.path.join(path, '%d.%d.jpg') %(i, x-1))
+
+                xbmc.sleep(1)
+                if not self.isRunning:
+                    break            
+
+
+        for i in xbmcvfs.listdir(path)[1]:
+            xbmcvfs.delete(os.path.join(path, i))
+
+
+
+    def onAction(self, action):
+        if action in (ACTION_PREVIOUS_MENU, ACTION_STOP, ACTION_NAV_BACK, ACTION_BACKSPACE):
+            self.isRunning = False
+            self.close()
+
+
+
+    def resizeImg(self, IMAGEFILE):
+        if xbmcvfs.exists(IMAGEFILE):
+            img = Image.open(IMAGEFILE)
+            img = img.resize((1280, 720))
+            img.save(IMAGEFILE)
+
+            
+
+CW = CamWindow()
+del CW
+
