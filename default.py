@@ -115,7 +115,8 @@ class CamWindow(xbmcgui.WindowDialog):
 
 
         for i in xbmcvfs.listdir(path)[1]:
-            xbmcvfs.delete(os.path.join(path, i))
+            if i <> "settings.xml":
+                xbmcvfs.delete(os.path.join(path, i))
 
 
 
