@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
 <category label="30001">
-    <setting label="30010" id="URL1" type="text" default="http://62.157.185.131/record/current.jpg"/>
-    <setting label="30011" id="URL2" type="text" default="http://62.157.185.131/record/current.jpg"/>
-    <setting label="30012" id="URL3" type="text" default="http://62.157.185.131/record/current.jpg"/>
-    <setting label="30013" id="URL4" type="text" default="http://62.157.185.131/record/current.jpg"/>
-    <setting label="30014" id="URL5" type="text" default="http://62.157.185.131/record/current.jpg"/>
-    <setting label="30015" id="URL6" type="text" default="http://62.157.185.131/record/current.jpg"/>
+    <setting label="30010" id="URL1" type="text" default="http://192.168.178.23:8080/shot.jpg"/>
+    <setting label="30011" id="URL2" type="text" default="http://192.168.178.23:8080/shot.jpg"/>
+    <setting label="30012" id="URL3" type="text" default="http://192.168.178.23:8080/shot.jpg"/>
+    <setting label="30013" id="URL4" type="text" default="http://192.168.178.23:8080/shot.jpg"/>
+    <setting label="30014" id="URL5" type="text" default="http://192.168.178.23:8080/shot.jpg"/>
+    <setting label="30015" id="URL6" type="text" default="http://192.168.178.23:8080/shot.jpg"/>
 </category>
 </settings>
