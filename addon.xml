@@ -2,7 +2,7 @@
 <addon 
   id="script.securitycams"
     name="Securitycams"
-    version="1.0.3"
+    version="1.0.4"
     provider-name="Homeserver, 4lb3rtO">
   <requires>
     <import addon="xbmc.python" version="2.19.0"/>
