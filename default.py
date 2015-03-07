@@ -21,13 +21,15 @@ import xbmc
 import xbmcgui
 import xbmcvfs
 import xbmcaddon
-import urllib
 import os.path
+from urllib import urlretrieve
 from PIL import Image
+from threading import Thread
 
 
 addon   = xbmcaddon.Addon()
 addonid = addon.getAddonInfo('id')
+addonname = addon.getAddonInfo('name')
 
 
 ACTION_PREVIOUS_MENU = 10
@@ -41,6 +43,7 @@ class CamWindow(xbmcgui.WindowDialog):
     def __init__(self):
         path = xbmc.translatePath('special://profile/addon_data/%s' %addonid )
         loader = xbmc.translatePath('special://home/addons/%s/resources/loader.gif' %addonid )
+        
 
         if not xbmcvfs.exists(path):
             xbmcvfs.mkdir(path)
@@ -98,26 +101,37 @@ class CamWindow(xbmcgui.WindowDialog):
         self.show()        
         self.isRunning = True
 
-        
-        x=0
-        while (not xbmc.abortRequested) and (self.isRunning):
-            x+=1
-            for i, c in enumerate(cams):
-                c[1] = os.path.join(path, '%d.%d.jpg') %(i, x)
-                urllib.urlretrieve(c[0], c[1])
-                self.resizeImg(c[1])
-                c[2].setImage(c[1], useCache=False)
-                xbmcvfs.delete(os.path.join(path, '%d.%d.jpg') %(i, x-1))
 
-                xbmc.sleep(1)
-                if not self.isRunning:
-                    break            
+        for i, c in enumerate(cams):
+            t = Thread(target=self.getImages, args=(i, c, path))
+            t.start()
+
+
+        while (not xbmc.abortRequested) and (self.isRunning):       
+            xbmc.sleep(1000)   
 
 
         for i in xbmcvfs.listdir(path)[1]:
             if i <> "settings.xml":
                 xbmcvfs.delete(os.path.join(path, i))
 
+
+
+    def getImages(self, i, c, path):
+        x=0
+        while (not xbmc.abortRequested) and (self.isRunning):
+            try:
+                x+=1
+                c[1] = os.path.join(path, '%d.%d.jpg') %(i, x)
+                urlretrieve(c[0], c[1])
+                #self.resizeImg(c[1])
+                c[2].setImage(c[1], useCache=False)
+                xbmcvfs.delete(os.path.join(path, '%d.%d.jpg') %(i, x-1))
+                xbmc.sleep(50)
+            except Exception, e:
+                xbmc.log(str(e))
+                #error = xbmc.translatePath('special://home/addons/%s/resources/error.png' %addonid )
+                #c[2].setImage(error, useCache=False)
 
 
     def onAction(self, action):
@@ -127,11 +141,11 @@ class CamWindow(xbmcgui.WindowDialog):
 
 
 
-    def resizeImg(self, IMAGEFILE):
-        if xbmcvfs.exists(IMAGEFILE):
-            img = Image.open(IMAGEFILE)
-            img = img.resize((1280, 720))
-            img.save(IMAGEFILE)
+    #def resizeImg(self, IMAGEFILE):
+    #    if xbmcvfs.exists(IMAGEFILE):
+    #        img = Image.open(IMAGEFILE)
+    #        img = img.resize((1280, 720))
+    #        img.save(IMAGEFILE)
 
             
 
