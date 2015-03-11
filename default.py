@@ -93,9 +93,17 @@ class CamWindow(xbmcgui.WindowDialog):
             img = xbmcgui.ControlImage(*c, filename=loader, aspectRatio = 0)
             self.addControl(img)            
             imgs.append(img)
+
+
+        # workaround - superimposed image controls to prevent flicker
+        imgs2 = []
+        for c, f in zip(coords, files):
+            img = xbmcgui.ControlImage(*c, filename='', aspectRatio = 0)
+            self.addControl(img)            
+            imgs2.append(img)
         
 
-        cams = [list(l) for l in zip(urls, files, imgs)]
+        cams = [list(l) for l in zip(urls, files, imgs, imgs2)]
 
 
         self.show()        
@@ -124,28 +132,23 @@ class CamWindow(xbmcgui.WindowDialog):
                 x+=1
                 c[1] = os.path.join(path, '%d.%d.jpg') %(i, x)
                 urlretrieve(c[0], c[1])
-                #self.resizeImg(c[1])
-                c[2].setImage(c[1], useCache=False)
+                c[2].setColorDiffuse('0xFFFFFFFF')
+                c[3].setColorDiffuse('0xFFFFFFFF')
+                c[2].setImage(c[1], useCache=False)                
                 xbmcvfs.delete(os.path.join(path, '%d.%d.jpg') %(i, x-1))
-                xbmc.sleep(50)
+                c[3].setImage(c[1], useCache=False)               
             except Exception, e:
                 xbmc.log(str(e))
                 #error = xbmc.translatePath('special://home/addons/%s/resources/error.png' %addonid )
                 #c[2].setImage(error, useCache=False)
+                c[2].setColorDiffuse('0xC0FF0000')
+                c[3].setColorDiffuse('0xC0FF0000')
 
 
     def onAction(self, action):
         if action in (ACTION_PREVIOUS_MENU, ACTION_STOP, ACTION_NAV_BACK, ACTION_BACKSPACE):
             self.isRunning = False
             self.close()
-
-
-
-    #def resizeImg(self, IMAGEFILE):
-    #    if xbmcvfs.exists(IMAGEFILE):
-    #        img = Image.open(IMAGEFILE)
-    #        img = img.resize((1280, 720))
-    #        img.save(IMAGEFILE)
 
             
 
